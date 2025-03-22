@@ -3,7 +3,9 @@ import express from "express";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// import fs from "fs";
+import fs from "fs";
+
+my_api_key ="bjbjcbjbdcbjdbbjdbbcdcaabcdcd"
 
 // Middleware to log all requests
 app.use((req, res, next) => {
