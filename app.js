@@ -55,7 +55,13 @@ app.get("/users/:userId", (req, res) => {
     });
 });
 
-// POST route example
+// POST route example\
+
+app.post("/users", (req, res) => {
+    console.log("POST request to /users route with body:", req.body);
+    res.status(200).json({ 
+        message: "User created
+    });
 
 
 // Default route
