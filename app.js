@@ -17,6 +17,11 @@ app.get("/api", (req, res) => {
     res.status(200).json({ message: "API route is working!" });
 });
 
+app.get("/hello", (req, res) => {
+    res.send("Hello, CI/CD Pipeline!");
+});
+
+
 // Default route
 app.get("/", (req, res) => {
     res.send("Hello, CI/CD Pipeline!");
