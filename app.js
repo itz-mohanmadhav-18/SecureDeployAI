@@ -2,10 +2,8 @@
 import express from "express";
 const app = express();
 const PORT = process.env.PORT || 3000;
-import dotenv from "dotenv";
-dotenv.config();
-import mongoose from "mongoose";
 
+// import fs from "fs";
 
 // Health check route
 app.get("/health", (req, res) => {
@@ -18,5 +16,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    // console.log(`Server running on port ${PORT}`);
 });
