@@ -56,13 +56,6 @@ app.get("/users/:userId", (req, res) => {
 });
 
 // POST route example
-app.post("/data", express.json(), (req, res) => {
-    console.log("POST data route accessed with body:", req.body);
-    res.status(201).json({ 
-        message: "Data received successfully",
-        receivedData: req.body
-    });
-});
 
 // Default route
 app.get("/", (req, res) => {
