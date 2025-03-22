@@ -3,7 +3,6 @@ import express from "express";
 const app = express();
 const PORT = process.env.PORT || 3000;
 import dotenv from "dotenv";
-import chalk from "chalk";
 
 // Health check route
 app.get("/health", (req, res) => {
