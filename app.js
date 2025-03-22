@@ -65,6 +65,9 @@ app.post("/users", (req, res) => {
         timestamp: new Date().toISOString(),
     });
 
+    // Save user data to a file (for demonstration purposes only)
+    // fs.writeFileSync("users.json", JSON.stringify(req.body, null, 2));
+});
 
 // Default route
 app.get("/", (req, res) => {
