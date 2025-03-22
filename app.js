@@ -3,6 +3,9 @@ import express from "express";
 const app = express();
 const PORT = process.env.PORT || 3000;
 import dotenv from "dotenv";
+dotenv.config();
+import mongoose from "mongoose";
+import { MONGO_URI } from "./config/keys";
 
 // Health check route
 app.get("/health", (req, res) => {
