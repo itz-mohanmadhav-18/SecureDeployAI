@@ -8,8 +8,14 @@ const PORT = process.env.PORT || 3000;
 // Health check route
 app.get("/health", (req, res) => {
     res.status(200).json({ message: "Server is running!" });
-// });
-// my-api-key = 'nsdcjsdbvujnvnbvjdsjvdjsvbs'
+});
+
+// Set up environment variables
+
+// API route
+app.get("/api", (req, res) => {
+    res.status(200).json({ message: "API route is working!" });
+});
 
 // Default route
 app.get("/", (req, res) => {
