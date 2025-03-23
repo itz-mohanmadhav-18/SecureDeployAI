@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3000;
 import fs from "fs";
 
 // my_api_key ="bjbjcbjbdcbjdbbjdbbcdcaabcdcd"cdd
-
+    
 // Middleware to log all requests/
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
