@@ -69,7 +69,8 @@ pipeline {
         stage('Run OWASP ZAP Scan') {
             steps {
                 sh """
-                    ${OWASP_ZAP_PATH} -cmd -port 9090 -quickurl ${TARGET_URL} -quickout "\$WORKSPACE/zap_report.html" -script "\$WORKSPACE/zap_scan.js"
+                    /snap/bin/zaproxy -cmd -port 9090 -quickurl http://localhost:3000 -quickout /var/lib/jenkins/workspace/NodeJS-CICD/zap_report.html -script /var/lib/jenkins/workspace/NodeJS-CICD/zap_scan.js
+
                 """
             }
         }
