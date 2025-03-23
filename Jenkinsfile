@@ -22,9 +22,8 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    try {
-                        sh 'npm test'
-                    } catch (Exception e) {
+                    def exitCode = sh(script: 'npm test', returnStatus: true)
+                    if (exitCode != 0) {
                         echo 'Tests failed, but continuing...'
                     }
                 }
@@ -47,8 +46,11 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh 'docker run -d -p 3000:3000 --name my-node-app-$(date +%s) mohanmadhavsinghal/my-node-app
-'
+                sh '''
+                docker stop my-node-app || true
+                docker rm my-node-app || true
+                docker run -d -p 3000:3000 --name my-node-app mohanmadhavsinghal/my-node-app
+                '''
             }
         }
 
