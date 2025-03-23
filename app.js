@@ -3,43 +3,43 @@ import express from "express";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-import fs from "fs";
+// import fs from "fs";
 
-// my_api_key ="bjbjcbjbdcbjdbbjdbbcdcaabcdcd"cdd
+// my_api_key ="bjbjcbjbdcbjdbbjdbbcdcaabcdcd"
 
 // Middleware to log all requests/
 app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+//   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   next();
 });
 
 // Health check route
 app.get("/health", (req, res) => {
-    console.log("Health check route accessed");
+    // console.log("Health check route accessed");
     res.status(200).json({ message: "Server is running!" });
 });
 
 // API route
 app.get("/api", (req, res) => {
-    console.log("API route accessed");//console.log(req
+    // console.log("API route accessed");//console.log(req
     res.status(200).json({ message: "API route is working!" });
 });
 
 // Hello route
 app.get("/hello", (req, res) => { 
-    console.log("Hello route accessed");
+    // console.log("Hello route accessed");
     res.send("Hello, CI/CD Pipeline!"); 
 });
 
 // Test routes
 app.get("/test", (req, res) => {
-    console.log("Test route accessed");
+    // console.log("Test route accessed");
     res.status(200).json({ status: "success", message: "Test route is working!" });
 });
 
 // Echo route - returns whatever you send as query parameters
 app.get("/echo", (req, res) => {
-    console.log("Echo route accessed with query:", req.query);
+    // console.log("Echo route accessed with query:", req.query);
     res.status(200).json({ 
         message: "Echo service", 
         query: req.query,
@@ -50,7 +50,7 @@ app.get("/echo", (req, res) => {
 // Route with parameters
 app.get("/users/:userId", (req, res) => {
     const userId = req.params.userId;
-    console.log(`User route accessed for ID: ${userId}`);
+    // console.log(`User route accessed for ID: ${userId}`);
     res.status(200).json({ 
         message: `Fetched user data for ID: ${userId}`,
         userId: userId
@@ -60,7 +60,7 @@ app.get("/users/:userId", (req, res) => {
 // POST route example\
 
 app.post("/users", (req, res) => {
-    console.log("POST request to /users route with body:", req.body);
+    // console.log("POST request to /users route with body:", req.body);
     res.status(200).json({ 
         message: "User created",
         user: req.body,
@@ -73,14 +73,14 @@ app.post("/users", (req, res) => {
 
 // Default route
 app.get("/", (req, res) => {
-    console.log("Root route accessed");
+    // console.log("Root route accessed");
     res.send("Welcome to the test API server!");
 });
 //dk
 
 // Wildcard route to catch undefined routes
 app.use("*", (req, res) => {
-    console.log(`Request to non-existent route: ${req.originalUrl}`);
+    // console.log(`Request to non-existent route: ${req.originalUrl}`);
     res.status(404).json({ 
         status: "error", 
         message: "Route not found",
@@ -89,5 +89,5 @@ app.use("*", (req, res) => {
 });
 
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running${PORT}`);
+    // console.log(`Server running${PORT}`);
 });
