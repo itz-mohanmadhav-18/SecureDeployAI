@@ -54,25 +54,11 @@ pipeline {
             }
         }
 
-        stage('Getting scripts from AI') {
+        stage('Run ZAP Scan') {
             steps {
-                echo 'Getting scripts from AI...'
-            }
-        }
-
-        stage('Running AI-generated scripts') {
-            steps {
-                echo 'Running AI-generated scripts...'
-            }
-        }
-
-        stage('Run OWASP ZAP Scan') {
-            steps {
-                sh '''
-                /snap/bin/zaproxy -daemon -port 9090 -host 127.0.0.1 -config api.disablekey=true
-                sleep 10
-                /snap/bin/zaproxy -cmd -quickurl $TARGET_URL -quickout zap_report.html
-                '''
+                script {
+                    sh 'node zap_scan.js'
+                }
             }
         }
 
