@@ -19,29 +19,34 @@ pipeline {
         }
 
         stage('Test') {
-    steps {
-        script {
-            try {
-                sh 'npm test'
-            } catch (Exception e) {
-                echo 'Tests failed, but continuing...'
+            steps {
+                script {
+                    try {
+                        sh 'npm test'
+                    } catch (Exception e) {
+                        echo 'Tests failed, but continuing...'
+                    }
+                }
             }
         }
-    }
-}
-
 
         stage('Docker Build & Push') {
             steps {
-                sh 'docker build -t $IMAGE_NAME .'
-                sh 'docker login -u mohanmadhavsinghal -p Mohan123@'
-                sh 'docker push $IMAGE_NAME'
+                script {
+                    withCredentials([string(credentialsId: 'DOCKERHUB_TOKEN', variable: 'DOCKER_PAT')]) {
+                        sh '''
+                        docker build -t $IMAGE_NAME .
+                        echo $DOCKER_PAT | docker login -u mohanmadhavsinghal --password-stdin
+                        docker push $IMAGE_NAME
+                        '''
+                    }
+                }
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'docker run -d -p 3000:3000 $IMAGE_NAME'
+                sh 'docker run -d -p 3000:3000 --name my-node-app $IMAGE_NAME'
             }
         }
     }
