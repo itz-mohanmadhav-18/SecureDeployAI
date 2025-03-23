@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/AnShIkA-TrIpAtHi-2022/testing.git'
+                git branch: 'main', url: 'https://github.com/itz-mohanmadhav-18/SecureDeployAI.git'
             }
         }
 
