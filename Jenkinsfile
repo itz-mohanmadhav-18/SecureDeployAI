@@ -47,7 +47,8 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh 'docker run -d -p 3000:3000 --name my-node-app $IMAGE_NAME'
+                sh 'docker run -d -p 3000:3000 --name my-node-app-$(date +%s) mohanmadhavsinghal/my-node-app
+'
             }
         }
 
