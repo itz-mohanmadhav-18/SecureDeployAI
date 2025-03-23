@@ -7,7 +7,7 @@ import fs from "fs";
 
 // my_api_key ="bjbjcbjbdcbjdbbjdbbcdcaabcdcd"c
 
-// Middleware to log all requests
+// Middleware to log all requests/
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   next();
