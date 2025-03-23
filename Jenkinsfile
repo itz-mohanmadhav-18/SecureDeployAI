@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = "mohanmadhavsinghal/my-node-app"
+        TARGET_URL = "http://localhost:3000"
     }
 
     stages {
@@ -30,50 +31,6 @@ pipeline {
             }
         }
 
-        // Simulating AI-based Security Script Generation
-        stage('Request AI to Generate Security Scripts') {
-            steps {
-                echo "Sending request to AI to generate security testing scripts..."
-                sh 'sleep 3'  // Simulating API call to AI
-            }
-        }
-
-        stage('Retrieve AI-Generated Security Scripts') {
-            steps {
-                echo "Retrieving generated security scripts from AI..."
-                sh 'sleep 2'  // Simulating AI response delay
-                sh 'echo "Generated security scripts saved" > ai_security_scripts.sh'
-            }
-        }
-
-        stage('Execute AI-Generated Security Scripts') {
-            steps {
-                echo "Executing AI-generated security scripts..."
-                sh 'bash ai_security_scripts.sh'  // Dummy execution
-            }
-        }
-
-        // OWASP Dependency Check
-        stage('OWASP Dependency Check') {
-            steps {
-                echo "Running OWASP Dependency Check..."
-                sh '''
-                docker run --rm -v $(pwd):/src dependency-check \
-                --scan /src --format HTML --out reports/
-                '''
-            }
-        }
-
-        // OWASP ZAP Scan
-        stage('OWASP ZAP Security Scan') {
-            steps {
-                echo "Running OWASP ZAP Security Scan..."
-                sh '''
-                docker run -t owasp/zap2docker-stable zap-baseline.py -t http://localhost:3000 -r zap_report.html
-                '''
-            }
-        }
-
         stage('Docker Build & Push') {
             steps {
                 script {
@@ -91,6 +48,39 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh 'docker run -d -p 3000:3000 --name my-node-app $IMAGE_NAME'
+            }
+        }
+
+        stage('Getting scripts from AI') {
+            steps {
+                echo 'Getting scripts from AI...'
+            }
+        }
+
+        stage('Running AI-generated scripts') {
+            steps {
+                echo 'Running AI-generated scripts...'
+            }
+        }
+
+        stage('Run OWASP ZAP Scan') {
+            steps {
+                sh '''
+                /snap/bin/zaproxy -daemon -port 9090 -host 127.0.0.1 -config api.disablekey=true
+                sleep 10
+                /snap/bin/zaproxy -cmd -quickurl $TARGET_URL -quickout zap_report.html
+                '''
+            }
+        }
+
+        stage('Publish OWASP ZAP Report') {
+            steps {
+                publishHTML([allowMissing: true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: '.',
+                    reportFiles: 'zap_report.html',
+                    reportName: "OWASP ZAP Security Report"])
             }
         }
     }
