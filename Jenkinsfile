@@ -1,15 +1,13 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs "nodejs"
-    }
-
     environment {
         CI = "true"
-        OWASP_ZAP_PATH = "/usr/share/zaproxy/zap.sh"  // Updated for EC2 instance
+        OWASP_ZAP_PATH = "/usr/share/zaproxy/zap.sh"  // EC2 Path
         IMAGE_NAME = "mohanmadhavsinghal/my-node-app"
         TARGET_URL = "http://localhost:3000"
+        NODE_HOME = "/usr/bin"
+        PATH = "${NODE_HOME}:${env.PATH}"
     }
 
     stages {
@@ -28,7 +26,7 @@ pipeline {
         stage('Start Application') {
             steps {
                 sh 'nohup node server.js &'
-                sleep(time: 10, unit: 'SECONDS')  // Wait for the server to start
+                sleep(time: 10, unit: 'SECONDS')
             }
         }
 
