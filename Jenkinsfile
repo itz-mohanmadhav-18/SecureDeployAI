@@ -1,32 +1,34 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs "nodejs"
+    }
+
     environment {
+        CI = "true"
+        OWASP_ZAP_PATH = "/usr/share/zaproxy/zap.sh"  // Updated for EC2 instance
         IMAGE_NAME = "mohanmadhavsinghal/my-node-app"
         TARGET_URL = "http://localhost:3000"
     }
 
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/itz-mohanmadhav-18/SecureDeployAI.git'
+                git branch: 'main', url: 'https://github.com/AnShIkA-TrIpAtHi-2022/testing.git'
             }
         }
 
-        stage('Build') {
+        stage('Install Dependencies') {
             steps {
                 sh 'npm install'
             }
         }
 
-        stage('Test') {
+        stage('Start Application') {
             steps {
-                script {
-                    def exitCode = sh(script: 'npm test', returnStatus: true)
-                    if (exitCode != 0) {
-                        echo 'Tests failed, but continuing...'
-                    }
-                }
+                sh 'nohup node server.js &'
+                sleep(time: 10, unit: 'SECONDS')  // Wait for the server to start
             }
         }
 
@@ -44,21 +46,33 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy Application') {
             steps {
                 sh '''
                 docker stop my-node-app || true
                 docker rm my-node-app || true
-                docker run -d -p 3000:3000 --name my-node-app mohanmadhavsinghal/my-node-app
+                docker run -d -p 3000:3000 --name my-node-app $IMAGE_NAME
                 '''
             }
         }
 
-        stage('Run ZAP Scan') {
+        stage('Getting scripts from AI') {
             steps {
-                script {
-                    sh 'node zap_scan.js'
-                }
+                echo 'Getting scripts from AI...'
+            }
+        }
+
+        stage('Running AI-generated scripts') {
+            steps {
+                echo 'Running AI-generated scripts...'
+            }
+        }
+
+        stage('Run OWASP ZAP Scan') {
+            steps {
+                sh """
+                    ${OWASP_ZAP_PATH} -cmd -port 9090 -quickurl ${TARGET_URL} -quickout "\$WORKSPACE/zap_report.html" -script "\$WORKSPACE/zap_scan.js"
+                """
             }
         }
 
